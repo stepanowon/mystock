@@ -27,11 +27,11 @@ function TableHead() {
         <th className="pb-3 pr-4 text-right">수량</th>
         <th className="pb-3 pr-4 text-right">평균 매수가</th>
         <th className="pb-3 pr-4 text-right">현재가</th>
-        <th className="pb-3 pr-4 text-right">매수금액</th>
-        <th className="pb-3 pr-4 text-right">평가금액</th>
-        <th className="pb-3 pr-4 text-right">이익/손실액</th>
-        <th className="pb-3 pr-4 text-right">수익률</th>
-        <th className="pb-3 pr-4 text-right">비중</th>
+        <th className="hidden pb-3 pr-4 text-right md:table-cell">매수금액</th>
+        <th className="hidden pb-3 pr-4 text-right md:table-cell">평가금액</th>
+        <th className="hidden pb-3 pr-4 text-right md:table-cell">이익/손실액</th>
+        <th className="hidden pb-3 pr-4 text-right md:table-cell">수익률</th>
+        <th className="hidden pb-3 pr-4 text-right md:table-cell">비중</th>
         <th className="pb-3 text-right">삭제</th>
       </tr>
     </thead>
@@ -82,15 +82,15 @@ export function HoldingsTable({ holdings, quoteErrors }: HoldingsTableProps) {
             )}
           </td>
           {/* 매수금액 */}
-          <td className="py-3 pr-4 text-right text-gray-900">
+          <td className="hidden py-3 pr-4 text-right text-gray-900 md:table-cell">
             {formatCurrency(h.costBasis, h.currency)}
           </td>
           {/* 평가금액 */}
-          <td className="py-3 pr-4 text-right text-gray-900">
+          <td className="hidden py-3 pr-4 text-right text-gray-900 md:table-cell">
             {hasError ? <span className="text-xs text-gray-400">-</span> : formatCurrency(h.marketValue, h.currency)}
           </td>
           {/* 이익/손실액 */}
-          <td className="py-3 pr-4 text-right">
+          <td className="hidden py-3 pr-4 text-right md:table-cell">
             {hasError ? (
               <span className="text-xs text-gray-400">-</span>
             ) : (
@@ -100,7 +100,7 @@ export function HoldingsTable({ holdings, quoteErrors }: HoldingsTableProps) {
             )}
           </td>
           {/* 수익률 */}
-          <td className="py-3 pr-4 text-right">
+          <td className="hidden py-3 pr-4 text-right md:table-cell">
             {hasError ? (
               <span className="text-xs text-gray-400">-</span>
             ) : (
@@ -110,7 +110,7 @@ export function HoldingsTable({ holdings, quoteErrors }: HoldingsTableProps) {
             )}
           </td>
           {/* 비중 */}
-          <td className="py-3 pr-4 text-right text-gray-600">{h.weight.toFixed(1)}%</td>
+          <td className="hidden py-3 pr-4 text-right text-gray-600 md:table-cell">{h.weight.toFixed(1)}%</td>
           {/* 삭제 */}
           <td className="py-3 text-right">
             <Button
