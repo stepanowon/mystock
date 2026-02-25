@@ -128,13 +128,13 @@ export function PortfolioPage() {
       {groupSummaries && (
         <Card>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-xs md:text-sm">
               <thead>
                 <tr className="border-b border-gray-200 text-xs text-gray-500">
-                  <th className="pb-3 pr-6 text-left">구분</th>
-                  <th className="pb-3 pr-6 text-right">매수금액</th>
-                  <th className="pb-3 pr-6 text-right">평가금액</th>
-                  <th className="pb-3 pr-6 text-right">이익/손실액</th>
+                  <th className="pb-3 pr-3 text-left md:pr-6">구분</th>
+                  <th className="pb-3 pr-3 text-right md:pr-6">매수금액</th>
+                  <th className="pb-3 pr-3 text-right md:pr-6">평가금액</th>
+                  <th className="pb-3 pr-3 text-right md:pr-6">이익/손실액</th>
                   <th className="pb-3 text-right">수익률</th>
                 </tr>
               </thead>
@@ -146,15 +146,15 @@ export function PortfolioPage() {
                   ] as const
                 ).map(({ label, data }) => (
                   <tr key={label} className="border-b border-gray-100">
-                    <td className="py-3 pr-6 font-medium text-gray-700">{label}</td>
-                    <td className="py-3 pr-6 text-right text-gray-900">
+                    <td className="py-3 pr-3 font-medium text-gray-700 md:pr-6">{label}</td>
+                    <td className="py-3 pr-3 text-right text-gray-900 md:pr-6">
                       {formatCurrency(data.costBasis, 'KRW')}
                     </td>
-                    <td className="py-3 pr-6 text-right text-gray-900">
+                    <td className="py-3 pr-3 text-right text-gray-900 md:pr-6">
                       {formatCurrency(data.marketValue, 'KRW')}
                     </td>
-                    <td className="py-3 pr-6 text-right">
-                      <span className={clsx('font-medium', data.returnAmount >= 0 ? 'text-red-600' : 'text-blue-600')}>
+                    <td className="py-3 pr-3 text-right md:pr-6">
+                      <span className={clsx('whitespace-nowrap font-medium', data.returnAmount >= 0 ? 'text-red-600' : 'text-blue-600')}>
                         {data.returnAmount >= 0 ? '+' : ''}{formatCurrency(data.returnAmount, 'KRW')}
                       </span>
                     </td>
@@ -168,15 +168,15 @@ export function PortfolioPage() {
 
                 {/* 합계 행 */}
                 <tr className="bg-gray-50">
-                  <td className="py-3 pr-6 font-bold text-gray-900">합계</td>
-                  <td className="py-3 pr-6 text-right font-bold text-gray-900">
+                  <td className="py-3 pr-3 font-bold text-gray-900 md:pr-6">합계</td>
+                  <td className="py-3 pr-3 text-right font-bold text-gray-900 md:pr-6">
                     {formatCurrency(groupSummaries.total.costBasis, 'KRW')}
                   </td>
-                  <td className="py-3 pr-6 text-right font-bold text-gray-900">
+                  <td className="py-3 pr-3 text-right font-bold text-gray-900 md:pr-6">
                     {formatCurrency(groupSummaries.total.marketValue, 'KRW')}
                   </td>
-                  <td className="py-3 pr-6 text-right">
-                    <span className={clsx('font-bold', groupSummaries.total.returnAmount >= 0 ? 'text-red-600' : 'text-blue-600')}>
+                  <td className="py-3 pr-3 text-right md:pr-6">
+                    <span className={clsx('whitespace-nowrap font-bold', groupSummaries.total.returnAmount >= 0 ? 'text-red-600' : 'text-blue-600')}>
                       {groupSummaries.total.returnAmount >= 0 ? '+' : ''}{formatCurrency(groupSummaries.total.returnAmount, 'KRW')}
                     </span>
                   </td>
