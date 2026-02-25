@@ -4,6 +4,7 @@ import {
   setDoc,
   updateDoc,
   serverTimestamp,
+  type FieldValue,
 } from 'firebase/firestore'
 import { db } from '@/config/firebase'
 import type { UserProfile, UserSettings } from '@/types'
@@ -44,7 +45,7 @@ export async function updateUserSettings(
   settings: Partial<UserSettings>,
 ): Promise<void> {
   const docRef = getUserDocRef(uid)
-  const updates: Record<string, unknown> = { updatedAt: serverTimestamp() }
+  const updates: Record<string, FieldValue | Partial<unknown>> = { updatedAt: serverTimestamp() }
   for (const [key, value] of Object.entries(settings)) {
     updates[`settings.${key}`] = value
   }

@@ -109,7 +109,7 @@ export async function searchKoreanStocks(
       name: item.name,
       market: 'KRX' as const,
       currency: 'KRW' as const,
-      assetType: (item.typeCode === 'etf' ? 'etf' : 'stock') as const,
+      assetType: (item.typeCode === 'etf' ? 'etf' : 'stock') as 'etf' | 'stock',
     }))
 
   if (results.length === 0) {
