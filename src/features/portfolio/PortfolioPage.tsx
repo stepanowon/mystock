@@ -134,7 +134,7 @@ export function PortfolioPage() {
                   <th className="pb-3 pr-3 text-left md:pr-6">구분</th>
                   <th className="pb-3 pr-3 text-right md:pr-6">매수금액</th>
                   <th className="pb-3 pr-3 text-right md:pr-6">평가금액</th>
-                  <th className="pb-3 pr-3 text-right md:pr-6">이익/손실액</th>
+                  <th className="hidden pb-3 pr-3 text-right md:table-cell md:pr-6">이익/손실액</th>
                   <th className="pb-3 text-right">수익률</th>
                 </tr>
               </thead>
@@ -153,7 +153,7 @@ export function PortfolioPage() {
                     <td className="py-3 pr-3 text-right text-gray-900 md:pr-6">
                       {formatCurrency(data.marketValue, 'KRW')}
                     </td>
-                    <td className="py-3 pr-3 text-right md:pr-6">
+                    <td className="hidden py-3 pr-3 text-right md:table-cell md:pr-6">
                       <span className={clsx('whitespace-nowrap font-medium', data.returnAmount >= 0 ? 'text-red-600' : 'text-blue-600')}>
                         {data.returnAmount >= 0 ? '+' : ''}{formatCurrency(data.returnAmount, 'KRW')}
                       </span>
@@ -175,7 +175,7 @@ export function PortfolioPage() {
                   <td className="py-3 pr-3 text-right font-bold text-gray-900 md:pr-6">
                     {formatCurrency(groupSummaries.total.marketValue, 'KRW')}
                   </td>
-                  <td className="py-3 pr-3 text-right md:pr-6">
+                  <td className="hidden py-3 pr-3 text-right md:table-cell md:pr-6">
                     <span className={clsx('whitespace-nowrap font-bold', groupSummaries.total.returnAmount >= 0 ? 'text-red-600' : 'text-blue-600')}>
                       {groupSummaries.total.returnAmount >= 0 ? '+' : ''}{formatCurrency(groupSummaries.total.returnAmount, 'KRW')}
                     </span>
