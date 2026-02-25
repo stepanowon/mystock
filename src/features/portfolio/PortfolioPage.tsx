@@ -99,18 +99,28 @@ export function PortfolioPage() {
       {/* 헤더 */}
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-gray-900">포트폴리오</h2>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           <Button
             variant="secondary"
             onClick={() => exportPortfolioCsv(portfolio ?? [])}
             disabled={!portfolio?.length}
+            className="whitespace-nowrap text-xs md:text-sm"
           >
             내보내기
           </Button>
-          <Button variant="secondary" onClick={() => setIsCsvImportOpen(true)}>
+          <Button
+            variant="secondary"
+            onClick={() => setIsCsvImportOpen(true)}
+            className="whitespace-nowrap text-xs md:text-sm"
+          >
             가져오기
           </Button>
-          <Button onClick={() => setIsAddOpen(true)}>종목 추가</Button>
+          <Button
+            onClick={() => setIsAddOpen(true)}
+            className="whitespace-nowrap text-xs md:text-sm"
+          >
+            종목 추가
+          </Button>
         </div>
       </div>
 
