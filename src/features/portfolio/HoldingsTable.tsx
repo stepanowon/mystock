@@ -60,7 +60,7 @@ export function HoldingsTable({ holdings, quoteErrors }: HoldingsTableProps) {
             <Link to={`/stock/${h.symbol}?market=${h.market}`} className="hover:underline">
               <div className="flex items-center gap-2">
                 <span className="font-medium text-gray-900">{h.symbol}</span>
-                <Badge>{h.market}</Badge>
+                <span className="hidden md:inline"><Badge>{h.market}</Badge></span>
               </div>
               <span className="text-xs text-gray-500">{h.name}</span>
             </Link>
@@ -116,7 +116,11 @@ export function HoldingsTable({ holdings, quoteErrors }: HoldingsTableProps) {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => deleteItem.mutate(h.id)}
+              onClick={() => {
+                if (window.confirm(`${h.name}(${h.symbol})을 삭제하시겠습니까?`)) {
+                  deleteItem.mutate(h.id)
+                }
+              }}
               className="text-gray-400 hover:text-red-600"
             >
               X

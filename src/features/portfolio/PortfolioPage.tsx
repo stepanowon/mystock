@@ -105,10 +105,10 @@ export function PortfolioPage() {
             onClick={() => exportPortfolioCsv(portfolio ?? [])}
             disabled={!portfolio?.length}
           >
-            CSV 내보내기
+            내보내기
           </Button>
           <Button variant="secondary" onClick={() => setIsCsvImportOpen(true)}>
-            CSV 가져오기
+            가져오기
           </Button>
           <Button onClick={() => setIsAddOpen(true)}>종목 추가</Button>
         </div>
