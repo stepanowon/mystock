@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { getStockHistory } from '@/services/stock-api/stock-service'
+import { STOCK_HISTORY_STALE_TIME } from '@/config/constants'
 import type { MarketType } from '@/types'
 
 export function useStockHistory(
@@ -12,6 +13,6 @@ export function useStockHistory(
     queryKey: ['stock-history', symbol, market, range, interval ?? ''] as const,
     queryFn: () => getStockHistory(symbol, market, range, interval),
     enabled: !!symbol,
-    staleTime: 5 * 60 * 1000,
+    staleTime: STOCK_HISTORY_STALE_TIME,
   })
 }
