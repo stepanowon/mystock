@@ -1,0 +1,44 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[dev]
+  command    = "npm run dev"
+  port       = 8888
+  targetPort = 3000
+  framework  = "vite"
+
+# ── API 프록시 (외부 URL 직접 프록시) ────────────────────────────────────────
+# Netlify가 브라우저 요청 헤더를 그대로 전달 — Vite proxy 방식과 동일하게 동작
+# 주의: SPA catch-all보다 반드시 앞에 위치해야 함
+
+[[redirects]]
+  from  = "/api/yahoo/*"
+  to    = "https://query1.finance.yahoo.com/:splat"
+  status = 200
+  force  = true
+
+[[redirects]]
+  from  = "/api/naver-stock/*"
+  to    = "https://ac.stock.naver.com/:splat"
+  status = 200
+  force  = true
+
+[[redirects]]
+  from  = "/api/naver-mobile/*"
+  to    = "https://m.stock.naver.com/:splat"
+  status = 200
+  force  = true
+
+# exchange-rate: /api/exchange-rate/latest/KRW → https://open.er-api.com/v6/latest/KRW
+[[redirects]]
+  from  = "/api/exchange-rate/*"
+  to    = "https://open.er-api.com/v6/:splat"
+  status = 200
+  force  = true
+
+# ── SPA 라우팅 fallback (반드시 마지막) ──────────────────────────────────────
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
