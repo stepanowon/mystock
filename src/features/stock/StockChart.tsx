@@ -292,9 +292,9 @@ export function StockChart({ symbol, market, currency }: StockChartProps) {
   return (
     <div className="space-y-3">
       {/* 상단: 봉 종류 탭 + 이동평균 토글 */}
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         {/* 일/주/월/연 탭 */}
-        <div className="flex gap-0.5 rounded-lg bg-gray-100 p-0.5">
+        <div className="flex gap-0.5 rounded-lg bg-gray-100 p-0.5 self-start">
           {(Object.keys(TABS) as ChartTab[]).map((t) => (
             <button
               key={t}
@@ -313,7 +313,7 @@ export function StockChart({ symbol, market, currency }: StockChartProps) {
         </div>
 
         {/* 이동평균 토글 */}
-        <div className="flex gap-1.5">
+        <div className="flex flex-wrap gap-1.5">
           {MA_LINES.map((ma) => (
             <button
               key={ma.key}
