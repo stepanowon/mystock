@@ -36,12 +36,39 @@ export async function getQuote(
     if (kisAppKey && kisAppSecret) {
       return getKrxQuote(symbol, kisAppKey, kisAppSecret)
     }
+    let quote: StockQuote
     try {
-      return await getNaverKoreanQuote(symbol)
+      quote = await getNaverKoreanQuote(symbol)
     } catch {
       // 네이버 금융 실패 시 Yahoo Finance 폴백
       return getKoreanStockQuote(symbol)
     }
+
+    // 시가/고가/저가 또는 52주 최고/최저가 없으면 1년치 히스토리로 보완
+    const needsOhlc = quote.open === 0 || quote.high === 0 || quote.low === 0
+    const needs52Week = quote.high52Week === 0 || quote.low52Week === 0
+    if (needsOhlc || needs52Week) {
+      try {
+        const history = await getStockHistory(symbol, 'KRX', '1y', '1d')
+        const valid = history.filter((d) => d.close > 0)
+        if (valid.length > 0) {
+          const lastDay = valid[valid.length - 1]
+          const high52Week = needs52Week ? Math.max(...valid.map((d) => d.high)) : quote.high52Week
+          const low52Week  = needs52Week ? Math.min(...valid.map((d) => d.low))  : quote.low52Week
+          return {
+            ...quote,
+            open: needsOhlc ? (quote.open || lastDay.open) : quote.open,
+            high: needsOhlc ? (quote.high || lastDay.high) : quote.high,
+            low:  needsOhlc ? (quote.low  || lastDay.low)  : quote.low,
+            high52Week,
+            low52Week,
+          }
+        }
+      } catch {
+        // 보완 실패 시 원래 quote 반환
+      }
+    }
+    return quote
   }
   return getUsQuote(symbol)
 }

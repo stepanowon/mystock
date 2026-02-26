@@ -47,9 +47,10 @@ export async function getNaverKoreanQuote(symbol: string): Promise<StockQuote> {
     throw new Error(`네이버 금융: 유효한 가격 없음 (${symbol})`)
   }
 
-  const previousClose = parseKrw(data.previousClosePrice) || currentPrice
   const change = parseKrw(data.compareToPreviousClosePrice)
   const changePercent = parseFloat(data.fluctuationsRatio ?? '0') || 0
+  // previousClosePrice가 없으면 currentPrice - change로 계산
+  const previousClose = parseKrw(data.previousClosePrice) || (change !== 0 ? currentPrice - change : currentPrice)
 
   // 로컬 DB 한글명 우선, 없으면 네이버 응답의 stockName
   const localName = getKrStockBySymbol(symbol)?.name
@@ -65,9 +66,9 @@ export async function getNaverKoreanQuote(symbol: string): Promise<StockQuote> {
     change,
     changePercent,
     volume: parseKrw(data.accumulatedTradingVolume),
-    high: parseKrw(data.highPrice) || currentPrice,
-    low: parseKrw(data.lowPrice) || currentPrice,
-    open: parseKrw(data.openPrice) || currentPrice,
+    high: parseKrw(data.highPrice),
+    low: parseKrw(data.lowPrice),
+    open: parseKrw(data.openPrice),
     high52Week: 0,
     low52Week: 0,
     marketStatus: getMarketStatus('KRX'),

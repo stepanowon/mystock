@@ -1,6 +1,6 @@
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
-import { formatCurrency, formatPercent, formatVolume } from '@/lib/format'
+import { formatCurrency, formatPercent } from '@/lib/format'
 import { clsx } from 'clsx'
 import type { StockQuote } from '@/types'
 
@@ -56,11 +56,10 @@ export function StockQuoteInfo({ quote }: StockQuoteInfoProps) {
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <InfoItem label="시가" value={formatCurrency(quote.open, quote.currency)} />
-        <InfoItem label="고가" value={formatCurrency(quote.high, quote.currency)} />
-        <InfoItem label="저가" value={formatCurrency(quote.low, quote.currency)} />
+        <InfoItem label="시가" value={quote.open > 0 ? formatCurrency(quote.open, quote.currency) : '—'} />
+        <InfoItem label="고가" value={quote.high > 0 ? formatCurrency(quote.high, quote.currency) : '—'} />
+        <InfoItem label="저가" value={quote.low > 0 ? formatCurrency(quote.low, quote.currency) : '—'} />
         <InfoItem label="전일 종가" value={formatCurrency(quote.previousClose, quote.currency)} />
-        <InfoItem label="거래량" value={formatVolume(quote.volume)} />
         <InfoItem label="52주 최고" value={quote.high52Week > 0 ? formatCurrency(quote.high52Week, quote.currency) : '—'} />
         <InfoItem label="52주 최저" value={quote.low52Week > 0 ? formatCurrency(quote.low52Week, quote.currency) : '—'} />
       </div>
