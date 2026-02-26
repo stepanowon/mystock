@@ -1,3 +1,4 @@
+import '@/lib/patch-firebase-auth-for-electron'
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
 import { getFirestore, enableIndexedDbPersistence } from 'firebase/firestore'

@@ -9,3 +9,7 @@ Thumbs.db
 
 # Local Netlify folder
 .netlify
+
+# Electron builder output
+release/
+electron-builder.env

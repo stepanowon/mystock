@@ -10,7 +10,7 @@
     "stocks:download": "node scripts/download-kr-stocks.js",
     "etfs:download": "node scripts/download-kr-etfs.js",
     "dev:electron": "concurrently \"vite\" \"wait-on http://localhost:3000 && electron .\"",
-    "build:electron": "vite build && electron-builder"
+    "build:electron": "tsc -b && vite build && electron-builder"
   },
   "main": "electron/main.cjs",
   "dependencies": {
@@ -24,6 +24,46 @@
     "recharts": "^2.15.0",
     "zod": "^3.24.0",
     "zustand": "^5.0.0"
+  },
+  "build": {
+    "appId": "com.mystock.app",
+    "productName": "내주식보기",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "package.json",
+      "dist/*",
+      "dist/**/*",
+      "electron/*",
+      "electron/**/*"
+    ],
+    "toolsets": {
+      "winCodeSign": "1.1.0"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "artifactName": "mystock-setup-${version}.${ext}",
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "내주식보기"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "build/icon.icns",
+      "category": "public.app-category.finance"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "build/icon.png",
+      "category": "Finance"
+    }
   },
   "devDependencies": {
     "@netlify/functions": "^2.8.2",
