@@ -41,12 +41,12 @@ export function StockQuoteInfo({ quote }: StockQuoteInfoProps) {
       </div>
 
       <div className="mt-4 flex items-baseline gap-3">
-        <span className="text-3xl font-bold text-gray-900">
+        <span className="text-4xl font-bold text-gray-900">
           {formatCurrency(quote.currentPrice, quote.currency)}
         </span>
         <span
           className={clsx(
-            'text-lg font-semibold',
+            'text-xl font-semibold',
             isPositive ? 'text-red-600' : 'text-blue-600',
           )}
         >
@@ -61,8 +61,8 @@ export function StockQuoteInfo({ quote }: StockQuoteInfoProps) {
         <InfoItem label="저가" value={formatCurrency(quote.low, quote.currency)} />
         <InfoItem label="전일 종가" value={formatCurrency(quote.previousClose, quote.currency)} />
         <InfoItem label="거래량" value={formatVolume(quote.volume)} />
-        <InfoItem label="52주 최고" value={formatCurrency(quote.high52Week, quote.currency)} />
-        <InfoItem label="52주 최저" value={formatCurrency(quote.low52Week, quote.currency)} />
+        <InfoItem label="52주 최고" value={quote.high52Week > 0 ? formatCurrency(quote.high52Week, quote.currency) : '—'} />
+        <InfoItem label="52주 최저" value={quote.low52Week > 0 ? formatCurrency(quote.low52Week, quote.currency) : '—'} />
       </div>
     </Card>
   )
@@ -71,8 +71,8 @@ export function StockQuoteInfo({ quote }: StockQuoteInfoProps) {
 function InfoItem({ label, value }: { readonly label: string; readonly value: string }) {
   return (
     <div>
-      <p className="text-xs text-gray-500">{label}</p>
-      <p className="mt-0.5 text-sm font-medium text-gray-900">{value}</p>
+      <p className="text-sm text-gray-500">{label}</p>
+      <p className="mt-0.5 text-base font-semibold text-gray-900">{value}</p>
     </div>
   )
 }

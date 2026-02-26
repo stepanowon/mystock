@@ -68,8 +68,8 @@ export async function getNaverKoreanQuote(symbol: string): Promise<StockQuote> {
     high: parseKrw(data.highPrice) || currentPrice,
     low: parseKrw(data.lowPrice) || currentPrice,
     open: parseKrw(data.openPrice) || currentPrice,
-    high52Week: currentPrice,
-    low52Week: currentPrice,
+    high52Week: 0,
+    low52Week: 0,
     marketStatus: getMarketStatus('KRX'),
     updatedAt: new Date().toISOString(),
   }

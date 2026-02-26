@@ -57,6 +57,22 @@ interface YahooChartResponse {
   }
 }
 
+/** indicators.quote[0] 배열에서 당일 시가/고가/저가를 계산 */
+function extractOhlcFromIndicators(result: YahooChartResult) {
+  const quote = result.indicators?.quote?.[0]
+  if (!quote) return { open: 0, high: 0, low: 0 }
+
+  const opens = (quote.open ?? []).filter((v): v is number => v != null)
+  const highs = (quote.high ?? []).filter((v): v is number => v != null)
+  const lows = (quote.low ?? []).filter((v): v is number => v != null)
+
+  return {
+    open: opens[0] ?? 0,
+    high: highs.length > 0 ? Math.max(...highs) : 0,
+    low: lows.length > 0 ? Math.min(...lows) : 0,
+  }
+}
+
 async function fetchChartResult(symbol: string, interval: string, range: string): Promise<YahooChartResult> {
   const url = `${BASE}/v8/finance/chart/${encodeURIComponent(symbol)}?interval=${interval}&range=${range}`
   const response = await fetch(url)
@@ -79,6 +95,7 @@ export async function getUsQuote(symbol: string): Promise<StockQuote> {
   const result = await fetchChartResult(symbol, '1m', '1d')
   const { meta } = result
   const market = mapExchangeToMarket(meta.exchangeName)
+  const ohlc = extractOhlcFromIndicators(result)
 
   const currentPrice = meta.regularMarketPrice ?? 0
   const previousClose =
@@ -97,11 +114,11 @@ export async function getUsQuote(symbol: string): Promise<StockQuote> {
     change,
     changePercent,
     volume: meta.regularMarketVolume ?? 0,
-    high: meta.regularMarketDayHigh ?? currentPrice,
-    low: meta.regularMarketDayLow ?? currentPrice,
-    open: meta.regularMarketOpen ?? currentPrice,
-    high52Week: meta.fiftyTwoWeekHigh ?? currentPrice,
-    low52Week: meta.fiftyTwoWeekLow ?? currentPrice,
+    high: meta.regularMarketDayHigh ?? (ohlc.high || currentPrice),
+    low: meta.regularMarketDayLow ?? (ohlc.low || currentPrice),
+    open: meta.regularMarketOpen ?? (ohlc.open || currentPrice),
+    high52Week: meta.fiftyTwoWeekHigh ?? 0,
+    low52Week: meta.fiftyTwoWeekLow ?? 0,
     marketStatus: getMarketStatus(market),
     updatedAt: new Date().toISOString(),
   }
@@ -117,6 +134,7 @@ export async function getKoreanStockQuote(symbol: string): Promise<StockQuote> {
       // interval=1m&range=1d: 오늘 분봉 데이터 + meta.regularMarketPrice 최신 현재가
       const result = await fetchChartResult(`${symbol}${suffix}`, '1m', '1d')
       const { meta } = result
+      const ohlc = extractOhlcFromIndicators(result)
       const currentPrice = meta.regularMarketPrice ?? 0
       const previousClose =
         meta.chartPreviousClose ?? meta.regularMarketPreviousClose ?? meta.previousClose ?? currentPrice
@@ -135,11 +153,11 @@ export async function getKoreanStockQuote(symbol: string): Promise<StockQuote> {
         change,
         changePercent,
         volume: meta.regularMarketVolume ?? 0,
-        high: meta.regularMarketDayHigh ?? currentPrice,
-        low: meta.regularMarketDayLow ?? currentPrice,
-        open: meta.regularMarketOpen ?? currentPrice,
-        high52Week: meta.fiftyTwoWeekHigh ?? currentPrice,
-        low52Week: meta.fiftyTwoWeekLow ?? currentPrice,
+        high: meta.regularMarketDayHigh ?? (ohlc.high || currentPrice),
+        low: meta.regularMarketDayLow ?? (ohlc.low || currentPrice),
+        open: meta.regularMarketOpen ?? (ohlc.open || currentPrice),
+        high52Week: meta.fiftyTwoWeekHigh ?? 0,
+        low52Week: meta.fiftyTwoWeekLow ?? 0,
         marketStatus: getMarketStatus('KRX'),
         updatedAt: new Date().toISOString(),
       }
